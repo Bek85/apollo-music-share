@@ -6,7 +6,7 @@ const theme = createTheme({
     mode: "dark",
     primary: {
       main: teal[600],
-      secondary: purple[600],
+      secondary: purple[800],
     },
   },
 });

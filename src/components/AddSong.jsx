@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AddBoxOutlined, LinkOutlined } from "@mui/icons-material";
+
 import {
   Button,
   Dialog,
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AddSong() {
   const classes = useStyles();
 
-  const [dialog, setDialog] = useState(true);
+  const [dialog, setDialog] = useState(false);
 
   const handleSetDialog = () => {
     setDialog(false);
