@@ -14,7 +14,7 @@ export default function Header() {
   const classes = useStyles();
   return (
     <div>
-      <AppBar color="secondary" position="fixed">
+      <AppBar color="primary" position="fixed">
         <Toolbar>
           <HeadsetTwoTone />
           <Typography className={classes.title} variant="h6" component="h1">
