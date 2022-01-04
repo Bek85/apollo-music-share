@@ -73,7 +73,6 @@ export default function SongPlayer() {
           image="http://img.youtube.com/vi/--ZtUFsIgMk/0.jpg"
         />
       </Card>
-      SongPlayer
       <QueuedSongList />
     </>
   );
