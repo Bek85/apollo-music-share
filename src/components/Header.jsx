@@ -13,7 +13,7 @@ import React from "react";
 export default function Header() {
   const classes = useStyles();
   return (
-    <div>
+    <>
       <AppBar color="primary" position="fixed">
         <Toolbar>
           <HeadsetTwoTone />
@@ -22,6 +22,6 @@ export default function Header() {
           </Typography>
         </Toolbar>
       </AppBar>
-    </div>
+    </>
   );
 }
