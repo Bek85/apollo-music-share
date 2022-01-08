@@ -1,3 +1,25 @@
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { WebSocketLink } from "apollo-link-ws";
+
+const client = new ApolloClient({
+  link: new WebSocketLink({
+    uri: "wss://react-music-share.hasura.app/v1/graphql",
+    options: {
+      reconnect: true,
+      connectionParams: {
+        headers: {
+          "content-type": "application/json",
+          "x-hasura-admin-secret": import.meta.env.VITE_HASURA_ADMIN_SECRET,
+        },
+      },
+    },
+  }),
+  cache: new InMemoryCache(),
+});
+
+export default client;
+
+/* // ! connection via https
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -12,3 +34,5 @@ const client = new ApolloClient({
 });
 
 export default client;
+
+*/

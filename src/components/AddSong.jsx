@@ -14,6 +14,8 @@ import {
   TextField,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { useMutation } from "@apollo/client";
+import { ADD_SONG } from "./../graphql/mutations";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,16 +35,20 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
   },
 }));
+
+const DEFAULT_SONG = {
+  duration: 0,
+  title: "",
+  artist: "",
+  thumbnail: "",
+};
+
 export default function AddSong() {
   const [dialog, setDialog] = useState(false);
   const [playable, setPlayable] = useState(false);
   const [url, setUrl] = useState("");
-  const [song, setSong] = useState({
-    duration: 0,
-    title: "",
-    artist: "",
-    thumbnail: "",
-  });
+  const [song, setSong] = useState(DEFAULT_SONG);
+  const [addSong, { error }] = useMutation(ADD_SONG);
   const classes = useStyles();
 
   useEffect(() => {
@@ -62,6 +68,29 @@ export default function AddSong() {
       [name]: value,
     }));
   };
+
+  const handleAddSong = async () => {
+    try {
+      const { url, thumbnail, duration, title, artist } = song;
+
+      await addSong({
+        variables: {
+          url: url.length > 0 ? url : null,
+          thumbnail: thumbnail.length > 0 ? thumbnail : null,
+          duration: duration > 0 ? duration : null,
+          title: title.length > 0 ? title : null,
+          artist: artist.length > 0 ? artist : null,
+        },
+      });
+      // handleCloseDialog();
+      setSong(DEFAULT_SONG);
+      setUrl("");
+    } catch (error) {
+      console.error("Error adding song", error);
+    }
+  };
+
+  // const handleCloseDialog = () => {};
 
   const handleEditSong = async ({ player }) => {
     const nestedPlayer = player.player.player;
@@ -104,7 +133,12 @@ export default function AddSong() {
     });
   };
 
+  const handleInputError = (field) => {
+    return error?.graphQLErrors[0]?.extensions?.path.includes(field);
+  };
+
   const { thumbnail, title, artist } = song;
+  console.dir(error);
 
   return (
     <div className={classes.container}>
@@ -127,6 +161,8 @@ export default function AddSong() {
             name="title"
             label="Title"
             fullWidth
+            error={handleInputError("title")}
+            helperText={handleInputError("title") && "Title is required"}
           />
           <TextField
             onChange={handleChangeSong}
@@ -135,6 +171,8 @@ export default function AddSong() {
             name="artist"
             label="Artist"
             fullWidth
+            error={handleInputError("artist")}
+            helperText={handleInputError("artist") && "Artist is required"}
           />
           <TextField
             onChange={handleChangeSong}
@@ -143,13 +181,17 @@ export default function AddSong() {
             name="thumbnail"
             label="Thumbnail"
             fullWidth
+            error={handleInputError("thumbnail")}
+            helperText={
+              handleInputError("thumbnail") && "thumbnail is required"
+            }
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSetDialog} color="secondary">
             Cancel
           </Button>
-          <Button variant="outlined" color="primary">
+          <Button onClick={handleAddSong} variant="outlined" color="primary">
             Add Song
           </Button>
         </DialogActions>

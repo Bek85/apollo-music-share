@@ -1,10 +1,10 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { CircularProgress } from "@mui/material";
-import { GET_SONGS } from "./../graphql/queries";
+import { GET_SONGS } from "./../graphql/subscriptions";
 import Song from "./Song";
 
 export default function SongList() {
-  const { data, loading, error } = useQuery(GET_SONGS);
+  const { data, loading, error } = useSubscription(GET_SONGS);
 
   if (loading) {
     return (
