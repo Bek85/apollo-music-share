@@ -1,4 +1,4 @@
-import { PlayArrow, SkipNext, SkipPrevious } from "@mui/icons-material";
+import { Pause, PlayArrow, SkipNext, SkipPrevious } from "@mui/icons-material";
 import {
   Card,
   CardContent,
@@ -41,8 +41,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SongPlayer() {
-  const { state } = useContext(SongContext);
+  const { state, dispatch } = useContext(SongContext);
   const classes = useStyles();
+
+  const handleTogglePlay = () => {
+    dispatch(
+      state.isPlaying
+        ? { type: "PAUSE_SONG" }
+        : {
+            type: "PLAY_SONG",
+          }
+    );
+  };
   return (
     <>
       <Card className={classes.container} variant="outlined">
@@ -59,8 +69,12 @@ export default function SongPlayer() {
             <IconButton>
               <SkipPrevious />
             </IconButton>
-            <IconButton>
-              <PlayArrow className={classes.playIcon} />
+            <IconButton onClick={handleTogglePlay}>
+              {state.isPlaying ? (
+                <Pause className={classes.playIcon} />
+              ) : (
+                <PlayArrow className={classes.playIcon} />
+              )}
             </IconButton>
             <IconButton>
               <SkipNext />

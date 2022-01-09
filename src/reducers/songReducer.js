@@ -1,6 +1,17 @@
 export default function songReducer(state, action) {
   switch (action.type) {
-    case value:
+    case "PLAY_SONG": {
+      return {
+        ...state,
+        isPlaying: true,
+      };
+    }
+    case "PAUSE_SONG": {
+      return {
+        ...state,
+        isPlaying: false,
+      };
+    }
 
     default:
       return state;
