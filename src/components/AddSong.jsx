@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useMutation } from "@apollo/client";
-import { ADD_SONG } from "./../graphql/mutations";
+import { ADD_SONG } from "@/graphql/mutations";
 
 const useStyles = makeStyles((theme) => ({
   container: {

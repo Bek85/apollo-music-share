@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
-import QueuedSong from "./QueuedSong";
+import QueuedSong from "@/components/QueuedSong";
 
 const useStyles = makeStyles((theme) => ({
   QueuedSongListContainer: {

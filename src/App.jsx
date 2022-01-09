@@ -1,9 +1,12 @@
-import Header from "./components/Header";
-import AddSong from "./components/AddSong";
-import SongPlayer from "./components/SongPlayer";
-import SongList from "./components/SongList";
+import Header from "@/components/Header";
+import AddSong from "@/components/AddSong";
+import SongPlayer from "@/components/SongPlayer";
+import SongList from "@/components/SongList";
 import { Grid, Hidden } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import SongContext from "@/context/songContext";
+import { useContext, useReducer } from "react";
+import songReducer from "@/reducers/songReducer";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,10 +29,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+  const initialSongState = useContext(SongContext);
+  const [state, dispatch] = useReducer(songReducer, initialSongState);
   const classes = useStyles();
 
   return (
-    <>
+    <SongContext.Provider value={{ state, dispatch }}>
       <Hidden only="xs">
         <Header />
       </Hidden>
@@ -42,7 +47,7 @@ function App() {
           <SongPlayer />
         </Grid>
       </Grid>
-    </>
+    </SongContext.Provider>
   );
 }
 

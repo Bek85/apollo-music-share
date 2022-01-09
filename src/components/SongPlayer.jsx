@@ -7,8 +7,10 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
-import QueuedSongList from "./QueuedSongList";
 import { makeStyles } from "@mui/styles";
+import QueuedSongList from "@/components/QueuedSongList";
+import { useContext } from "react";
+import SongContext from "@/context/songContext";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SongPlayer() {
+  const { state } = useContext(SongContext);
   const classes = useStyles();
   return (
     <>
@@ -46,10 +49,10 @@ export default function SongPlayer() {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography variant="h5" component="h3">
-              Title
+              {state.song.title}
             </Typography>
             <Typography variant="subtitle1" component="p" color="textSecondary">
-              Artist
+              {state.song.artist}
             </Typography>
           </CardContent>
           <div className={classes.controls}>
@@ -68,10 +71,7 @@ export default function SongPlayer() {
           </div>
           <Slider type="range" min={0} max={1} step={0.01} />
         </div>
-        <CardMedia
-          className={classes.thumbnail}
-          image="http://img.youtube.com/vi/--ZtUFsIgMk/0.jpg"
-        />
+        <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
       </Card>
       <QueuedSongList />
     </>
