@@ -42,6 +42,7 @@ export default function Song({ song }) {
   }, [state.song.id, song.id, state.isPlaying]);
 
   const handleTogglePlay = () => {
+    dispatch({ type: "SET_SONG", payload: { song } });
     dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
   };
 

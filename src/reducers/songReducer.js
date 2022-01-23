@@ -13,6 +13,13 @@ export default function songReducer(state, action) {
       };
     }
 
+    case "SET_SONG": {
+      return {
+        ...state,
+        song: action.payload.song,
+      };
+    }
+
     default:
       return state;
   }

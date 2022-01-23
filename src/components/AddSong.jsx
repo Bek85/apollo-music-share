@@ -138,7 +138,6 @@ export default function AddSong() {
   };
 
   const { thumbnail, title, artist } = song;
-  console.dir(error);
 
   return (
     <div className={classes.container}>
