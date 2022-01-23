@@ -3,7 +3,7 @@ import { WebSocketLink } from "apollo-link-ws";
 
 const client = new ApolloClient({
   link: new WebSocketLink({
-    uri: "wss://react-music-share.hasura.app/v1/graphql",
+    uri: `wss://${import.meta.env.VITE_HASURA_GRAPHQL_API}`,
     options: {
       reconnect: true,
       connectionParams: {
