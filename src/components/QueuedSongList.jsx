@@ -13,19 +13,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function QueuedSongList({ queue }) {
-  console.log({ queue });
   const classes = useStyles();
-  const song = {
-    title: "LUNE",
-    artist: "MOON",
-    thumbnail: "http://img.youtube.com/vi/--ZtUFsIgMk/0.jpg",
-  };
+  // const song = {
+  //   title: "LUNE",
+  //   artist: "MOON",
+  //   thumbnail: "http://img.youtube.com/vi/--ZtUFsIgMk/0.jpg",
+  // };
   return (
     <div className={classes.QueuedSongListContainer}>
       <Typography color="textSecondary" variant="button">
-        QUEUE (5)
+        QUEUE ({queue.length})
       </Typography>
-      {Array.from({ length: 5 }, () => song).map((song, i) => (
+      {queue.map((song, i) => (
         <QueuedSong key={i} song={song} />
       ))}
     </div>
