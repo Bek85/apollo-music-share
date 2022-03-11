@@ -1,6 +1,8 @@
+import { useMutation } from "@apollo/client";
 import { Delete } from "@mui/icons-material";
 import { Avatar, IconButton, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { ADD_OR_REMOVE_FROM_QUEUE } from "../graphql/mutations";
 
 const useStyles = makeStyles({
   avatar: {
@@ -26,6 +28,13 @@ const useStyles = makeStyles({
 
 export default function QueuedSong({ song }) {
   const classes = useStyles();
+  const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE);
+
+  function handleAddOrRemoveFromQueue() {
+    addOrRemoveFromQueue({
+      variables: { input: { ...song, __typename: "Song" } },
+    });
+  }
   return (
     <div className={classes.container}>
       <Avatar
@@ -45,7 +54,7 @@ export default function QueuedSong({ song }) {
           {song.artist}
         </Typography>
       </div>
-      <IconButton>
+      <IconButton onClick={handleAddOrRemoveFromQueue}>
         <Delete color="error" />
       </IconButton>
     </div>
