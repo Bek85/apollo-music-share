@@ -30,8 +30,10 @@ const typeDefs = gql`
   }
 `;
 
+const hasQueue = Boolean(localStorage.getItem("queue"));
+
 const data = {
-  queue: [],
+  queue: hasQueue ? JSON.parse(localStorage.getItem("queue")) : [],
 };
 
 const client = new ApolloClient({
