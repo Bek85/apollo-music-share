@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import QueuedSongList from "@/components/QueuedSongList";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import SongContext from "@/context/songContext";
 import { useQuery } from "@apollo/client";
 import { GET_QUEUED_SONGS } from "../graphql/queries";
@@ -45,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SongPlayer() {
   const { data } = useQuery(GET_QUEUED_SONGS);
+  const reactPlayerRef = useRef();
   const { state, dispatch } = useContext(SongContext);
   const [played, setPlayed] = useState(0);
+  const [seeking, setSeeking] = useState(false);
 
   const classes = useStyles();
 
@@ -59,6 +61,20 @@ export default function SongPlayer() {
           }
     );
   };
+
+  const handleProgressChange = (evt, newValue) => {
+    setPlayed(newValue);
+  };
+
+  const handleSeekMouseDown = () => {
+    setSeeking(true);
+  };
+
+  const handleSeekMouseUp = () => {
+    setSeeking(false);
+    reactPlayerRef.current.seekTo(played);
+  };
+
   return (
     <>
       <Card className={classes.container} variant="outlined">
@@ -89,13 +105,25 @@ export default function SongPlayer() {
               00:01:30
             </Typography>
           </div>
-          <Slider value={played} type="range" min={0} max={1} step={0.01} />
+          <Slider
+            onMouseDown={handleSeekMouseDown}
+            onMouseUp={handleSeekMouseUp}
+            onChange={handleProgressChange}
+            value={played}
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+          />
         </div>
 
         <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
         <ReactPlayer
+          ref={reactPlayerRef}
           onProgress={({ played, playedSeconds }) => {
-            setPlayed(played);
+            if (!seeking) {
+              setPlayed(played);
+            }
           }}
           url={state.song.url}
           playing={state.isPlaying}
