@@ -94,6 +94,20 @@ export default function SongPlayer() {
     return new Date(seconds * 1000).toISOString().substr(11, 8);
   };
 
+  const handlePlayPrevSong = () => {
+    const prevSong = data.queue[positionInQueue - 1];
+    if (prevSong) {
+      dispatch({ type: "SET_SONG", payload: { song: prevSong } });
+    }
+  };
+
+  const handlePlayNextSong = () => {
+    const nextSong = data.queue[positionInQueue + 1];
+    if (nextSong) {
+      dispatch({ type: "SET_SONG", payload: { song: nextSong } });
+    }
+  };
+
   return (
     <>
       <Card className={classes.container} variant="outlined">
@@ -107,7 +121,7 @@ export default function SongPlayer() {
             </Typography>
           </CardContent>
           <div className={classes.controls}>
-            <IconButton>
+            <IconButton onClick={handlePlayPrevSong}>
               <SkipPrevious />
             </IconButton>
             <IconButton onClick={handleTogglePlay}>
@@ -117,7 +131,7 @@ export default function SongPlayer() {
                 <PlayArrow className={classes.playIcon} />
               )}
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handlePlayNextSong}>
               <SkipNext />
             </IconButton>
             <Typography variant="subtitle1" component="p" color="textSecondary">
