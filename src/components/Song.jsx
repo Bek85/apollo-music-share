@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import SongContext from "../context/songContext";
+import { useMutation } from "@apollo/client";
+import { ADD_OR_REMOVE_FROM_QUEUE } from "../graphql/mutations";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Song({ song }) {
   const { state, dispatch } = useContext(SongContext);
   const [currentSongPlaying, setCurrentSongPlaying] = useState(false);
+  const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE);
   const classes = useStyles();
 
   useEffect(() => {
@@ -45,6 +48,12 @@ export default function Song({ song }) {
     dispatch({ type: "SET_SONG", payload: { song } });
     dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
   };
+
+  function handleAddOrRemoveFromQueue() {
+    addOrRemoveFromQueue({
+      variables: { input: { ...song, __typename: "Song" } },
+    });
+  }
 
   return (
     <Card className={classes.container}>
@@ -63,7 +72,11 @@ export default function Song({ song }) {
             <IconButton onClick={handleTogglePlay} size="small" color="primary">
               {currentSongPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
-            <IconButton size="small" color="secondary">
+            <IconButton
+              onClick={handleAddOrRemoveFromQueue}
+              size="small"
+              color="secondary"
+            >
               <Save />
             </IconButton>
           </CardActions>

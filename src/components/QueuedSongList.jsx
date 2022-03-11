@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function QueuedSongList() {
+export default function QueuedSongList({ queue }) {
+  console.log({ queue });
   const classes = useStyles();
   const song = {
     title: "LUNE",

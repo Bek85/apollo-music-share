@@ -11,6 +11,8 @@ import { makeStyles } from "@mui/styles";
 import QueuedSongList from "@/components/QueuedSongList";
 import { useContext } from "react";
 import SongContext from "@/context/songContext";
+import { useQuery } from "@apollo/client";
+import { GET_QUEUED_SONGS } from "../graphql/queries";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SongPlayer() {
+  const { data } = useQuery(GET_QUEUED_SONGS);
   const { state, dispatch } = useContext(SongContext);
   const classes = useStyles();
 
@@ -87,7 +90,7 @@ export default function SongPlayer() {
         </div>
         <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
       </Card>
-      <QueuedSongList />
+      <QueuedSongList queue={data.queue} />
     </>
   );
 }
