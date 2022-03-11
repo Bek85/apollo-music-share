@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import QueuedSongList from "@/components/QueuedSongList";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SongContext from "@/context/songContext";
 import { useQuery } from "@apollo/client";
 import { GET_QUEUED_SONGS } from "../graphql/queries";
@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SongPlayer() {
   const { data } = useQuery(GET_QUEUED_SONGS);
   const { state, dispatch } = useContext(SongContext);
+  const [played, setPlayed] = useState(0);
+
   const classes = useStyles();
 
   const handleTogglePlay = () => {
@@ -87,11 +89,18 @@ export default function SongPlayer() {
               00:01:30
             </Typography>
           </div>
-          <Slider type="range" min={0} max={1} step={0.01} />
+          <Slider value={played} type="range" min={0} max={1} step={0.01} />
         </div>
 
         <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
-        <ReactPlayer url={state.song.url} playing={state.isPlaying} hidden />
+        <ReactPlayer
+          onProgress={({ played, playedSeconds }) => {
+            setPlayed(played);
+          }}
+          url={state.song.url}
+          playing={state.isPlaying}
+          hidden
+        />
       </Card>
       <QueuedSongList queue={data.queue} />
     </>
