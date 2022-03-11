@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import QueuedSongList from "@/components/QueuedSongList";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import SongContext from "@/context/songContext";
 import { useQuery } from "@apollo/client";
 import { GET_QUEUED_SONGS } from "../graphql/queries";
@@ -50,6 +50,20 @@ export default function SongPlayer() {
   const [played, setPlayed] = useState(0);
   const [seeking, setSeeking] = useState(false);
   const [playedSeconds, setPlayedSeconds] = useState(0);
+  const [positionInQueue, setPositionInQueue] = useState(0);
+
+  useEffect(() => {
+    const songIndex = data.queue.findIndex((song) => song.id === state.song.id);
+    setPositionInQueue(songIndex);
+  }, [data.queue, state.song.id]);
+
+  useEffect(() => {
+    const nextSong = data.queue[positionInQueue + 1];
+    if (played === 1 && nextSong) {
+      setPlayed(0);
+      dispatch({ type: "SET_SONG", payload: { song: nextSong } });
+    }
+  }, [data.queue, played, dispatch, positionInQueue]);
 
   const classes = useStyles();
 
