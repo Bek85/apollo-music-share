@@ -1,3 +1,4 @@
+import ReactPlayer from "react-player";
 import { Pause, PlayArrow, SkipNext, SkipPrevious } from "@mui/icons-material";
 import {
   Card,
@@ -88,7 +89,9 @@ export default function SongPlayer() {
           </div>
           <Slider type="range" min={0} max={1} step={0.01} />
         </div>
+
         <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
+        <ReactPlayer url={state.song.url} playing={state.isPlaying} hidden />
       </Card>
       <QueuedSongList queue={data.queue} />
     </>
